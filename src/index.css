@@ -2,41 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Rail Scheduler Design System - Professional Railway Control Interface */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core Background & Text */
+    --background: 220 20% 98%;
+    --foreground: 220 15% 15%;
 
+    /* Card System */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 15% 15%;
 
+    /* Popover System */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Railway Primary Blue - Professional & Trustworthy */
+    --primary: 210 95% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 210 95% 40%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Clean Light Blue */
+    --secondary: 210 30% 95%;
+    --secondary-foreground: 220 15% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted Backgrounds */
+    --muted: 210 25% 96%;
+    --muted-foreground: 220 10% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Railway Orange for Highlights */
+    --accent: 25 95% 60%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Train Type Colors */
+    --express-train: 210 95% 45%;        /* Blue for Express */
+    --local-train: 120 60% 45%;          /* Green for Local */
+    --freight-train: 25 95% 60%;         /* Orange for Freight */
+    
+    /* Status Colors */
+    --success: 120 60% 45%;
+    --warning: 45 95% 55%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Control Interface Colors */
+    --control-bg: 220 25% 95%;
+    --control-border: 220 20% 85%;
+    --timeline-bg: 0 0% 100%;
+    --timeline-grid: 220 15% 90%;
 
+    /* Interactive Elements */
+    --border: 220 20% 85%;
+    --input: 220 20% 95%;
+    --ring: 210 95% 45%;
+
+    /* Spacing & Radius */
     --radius: 0.5rem;
+
+    /* Shadows for Professional Look */
+    --shadow-control: 0 2px 8px hsl(220 15% 15% / 0.08);
+    --shadow-card: 0 1px 3px hsl(220 15% 15% / 0.1);
+    --shadow-timeline: 0 4px 12px hsl(220 15% 15% / 0.1);
+
+    /* Animation Timing */
+    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-timeline: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +131,99 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+/* Custom Component Styles for Railway Interface */
+@layer components {
+  /* Control Panel Styles */
+  .control-panel {
+    @apply bg-card border border-control-border rounded-lg shadow-[var(--shadow-control)] p-4;
+  }
+
+  /* Timeline/Gantt Chart Styles */
+  .timeline-container {
+    @apply bg-timeline-bg border border-control-border rounded-lg shadow-[var(--shadow-timeline)] overflow-hidden;
+  }
+
+  .timeline-grid {
+    background-image: linear-gradient(90deg, hsl(var(--timeline-grid)) 1px, transparent 1px);
+    background-size: 60px 100%;
+  }
+
+  /* Train Bar Styles */
+  .train-bar {
+    @apply rounded-sm cursor-pointer transition-all duration-200 hover:shadow-md relative;
+  }
+
+  .train-bar.express {
+    @apply bg-[hsl(var(--express-train))] text-white;
+  }
+
+  .train-bar.local {
+    @apply bg-[hsl(var(--local-train))] text-white;
+  }
+
+  .train-bar.freight {
+    @apply bg-[hsl(var(--freight-train))] text-white;
+  }
+
+  /* KPI Cards */
+  .kpi-card {
+    @apply bg-card border border-control-border rounded-lg p-4 shadow-[var(--shadow-card)] hover:shadow-md transition-shadow;
+  }
+
+  /* Navigation Styles */
+  .nav-link {
+    @apply px-4 py-2 rounded-md transition-all duration-200 hover:bg-secondary text-sm font-medium;
+  }
+
+  .nav-link.active {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  /* Button Variants */
+  .btn-control {
+    @apply bg-primary text-primary-foreground hover:bg-[hsl(var(--primary-hover))] px-4 py-2 rounded-md font-medium transition-colors shadow-sm;
+  }
+
+  .btn-warning {
+    @apply bg-[hsl(var(--warning))] text-white hover:opacity-90 px-4 py-2 rounded-md font-medium transition-all;
+  }
+
+  .btn-success {
+    @apply bg-[hsl(var(--success))] text-white hover:opacity-90 px-4 py-2 rounded-md font-medium transition-all;
+  }
+
+  /* Status Indicators */
+  .status-on-time {
+    @apply text-[hsl(var(--success))] bg-[hsl(var(--success))]/10 px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .status-delayed {
+    @apply text-[hsl(var(--destructive))] bg-[hsl(var(--destructive))]/10 px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .status-predicted {
+    @apply text-[hsl(var(--warning))] bg-[hsl(var(--warning))]/10 px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  /* Animations */
+  .animate-timeline-update {
+    animation: timeline-update 0.5s ease-out;
+  }
+
+  @keyframes timeline-update {
+    0% { transform: translateX(-10px); opacity: 0.5; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  /* Tooltip Styles */
+  .train-tooltip {
+    @apply absolute z-50 bg-card border border-control-border rounded-md p-3 shadow-lg text-sm min-w-[200px];
+    transform: translateX(-50%);
+    top: -8px;
+    left: 50%;
   }
 }
